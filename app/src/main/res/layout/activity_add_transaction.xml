@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar Transação"
+        android:textSize="28sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"/>
+    <EditText
+        android:id="@+id/edtTransactionDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descrição"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+    android:id="@+id/edtTransactionValue"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Valor da Transação"
+    android:inputType="numberDecimal"
+    android:layout_marginBottom="16dp"/>
+
+    <Spinner
+        android:id="@+id/spnCategory"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnSaveTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salvar"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btnGoAddCategoryActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Cadastrar uma nova categoria"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/btnGoListTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Lista de Transações"
+        android:layout_gravity="center"/>
+</LinearLayout>
