@@ -3,16 +3,13 @@ package com.example.gerenciadorfinanceiro
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper
-import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper.Companion.sharedPreferencesCategory
+import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper
+import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper.Companion.sharedPreferencesCategory
 import com.example.gerenciadorfinanceiro.databinding.ActivityAddCategoryBinding
 
+private lateinit var binding: ActivityAddCategoryBinding
+private lateinit var categoryAdapter: CategoryAdapter
 class ActivityAddCategory : AppCompatActivity() {
-    private lateinit var binding: ActivityAddCategoryBinding
-    private lateinit var categoryAdapter: CategoryAdapter
-
-    //private val categoryList = mutableListOf<Category>() // Lista das categorias cadastradas
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -72,7 +69,7 @@ class ActivityAddCategory : AppCompatActivity() {
         }
 
         // Adiciona o objeto categoria à lista de categorias
-        val newCategory = Category(categoryName)
+        val newCategory = Category(Util.generateUniqueId(), categoryName)
         CategoryData.addCategory(newCategory) //.add(newCategory)
         categoryAdapter.notifyItemInserted(CategoryData.getListSize())
 

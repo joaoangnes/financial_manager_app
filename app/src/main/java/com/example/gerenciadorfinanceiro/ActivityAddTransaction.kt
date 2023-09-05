@@ -5,16 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
-import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper
-import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper.Companion.sharedPreferencesCategory
-import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper.Companion.sharedPreferencesTransaction
+import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper
 import com.example.gerenciadorfinanceiro.databinding.ActivityAddTransactionBinding
+import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper.Companion.sharedPreferencesCategory
+import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper.Companion.sharedPreferencesTransaction
 
 class ActivityAddTransaction : AppCompatActivity() {
     private lateinit var binding: ActivityAddTransactionBinding
     private lateinit var transactionAdapter: TransactionAdapter
-    private lateinit var sharedPreferencesCategory: SharedPreferencesHelper
-    private lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +20,8 @@ class ActivityAddTransaction : AppCompatActivity() {
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializa os SharedPreferencesHelper
-        sharedPreferencesCategory = SharedPreferencesHelper(this)
-        sharedPreferencesTransaction = SharedPreferencesHelper(this)
-        transactionAdapter = TransactionAdapter(this)
+        // Inicializa as variaveis chaves para o processamento
+        setupActivity()
 
         // Configura o Spinner com as categorias cadastradas
         configureCategorySpinner()
@@ -46,13 +42,20 @@ class ActivityAddTransaction : AppCompatActivity() {
         }
     }
 
+    // Função que irá inicializar o adapter e as SharedPreferences
+    private fun setupActivity(){
+        // Inicializa os SharedPreferencesHelper
+        sharedPreferencesCategory = SharedPreferencesHelper(this)
+        sharedPreferencesTransaction = SharedPreferencesHelper(this)
+        transactionAdapter = TransactionAdapter(this)
+    }
+
     // Função que irá adicionar a transação no SharedPreferences
     private fun addTransaction() {
         val transactionDescription = binding.edtTransactionDescription.text.toString()
         val transactionValue = binding.edtTransactionValue.text.toString().toDouble()
         val selectedCategoryIndex = binding.spnCategory.selectedItemPosition
         val savedTransactions = sharedPreferencesTransaction.getTransactions()
-        TransactionData.addListTransaction(savedTransactions)
 
         // Verifica se foi preenchido os dados da transação
         if ( binding.edtTransactionDescription.text.isEmpty()||
@@ -64,15 +67,10 @@ class ActivityAddTransaction : AppCompatActivity() {
         // Verifique se a categoria selecionada é válida
         if (selectedCategoryIndex >= 0 && selectedCategoryIndex < CategoryData.getListSize()) {
             val selectedCategory = CategoryData.categoryList[selectedCategoryIndex]
-
-            // Instanciando o objeto de transação
-            val newTransaction = Transaction(transactionDescription, transactionValue, selectedCategory)
+            val newTransaction = Transaction(Util.generateUniqueId(),transactionDescription, transactionValue, selectedCategory)
 
             // Salve a transação em SharedPreferences ou em outra fonte de dados
             TransactionData.addTransaction(newTransaction)
-
-           // transactionAdapter = TransactionAdapter(this)
-            // transactionAdapter.notifyDataSetChanged()
 
             // Limpe os campos após salvar a transação
             binding.edtTransactionDescription.text.clear()
@@ -80,7 +78,6 @@ class ActivityAddTransaction : AppCompatActivity() {
             binding.spnCategory.setSelection(0) // Defina a seleção do Spinner de volta para o primeiro item
         }
 
-        sharedPreferencesCategory = SharedPreferencesHelper(this) // Inicializa o SharedPreferences para armazenar as categorias
         sharedPreferencesTransaction.saveTransaction(TransactionData.transactionList) // Salva a nova transação no SharedPreferences
 
         // Limpa o EditText

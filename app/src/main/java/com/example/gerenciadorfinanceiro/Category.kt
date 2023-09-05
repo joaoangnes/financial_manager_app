@@ -1,7 +1,7 @@
 package com.example.gerenciadorfinanceiro
 
 // Classe para as categorias financeiras do aplicativo
-class Category (val name: String) {
+class Category(var category_id: String, var name: String) {
     // Construtor da classe Category que recebe o nome da categoria como parâmetro
 
     // Reescrita da função equals para comparar duas categorias

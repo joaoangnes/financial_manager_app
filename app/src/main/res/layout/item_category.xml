@@ -18,7 +18,7 @@
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/ivEditTransaction"
+        android:id="@+id/ivEditCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_edit"
@@ -28,11 +28,11 @@
 
     <!-- Ícone de exclusão -->
     <ImageView
-        android:id="@+id/ivDeleteTransaction"
+        android:id="@+id/ivDeleteCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_delete"
-        android:layout_toStartOf="@id/ivEditTransaction"
+        android:layout_toStartOf="@id/ivEditCategory"
         android:layout_centerVertical="true"
         android:contentDescription="Excluir" />
    <!-- <Button

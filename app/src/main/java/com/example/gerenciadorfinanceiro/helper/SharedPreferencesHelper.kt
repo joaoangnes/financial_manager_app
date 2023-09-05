@@ -1,8 +1,7 @@
-package com.example.gerenciadorfinanceiro.Helper
+package com.example.gerenciadorfinanceiro.helper
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.gerenciadorfinanceiro.Category
 import com.example.gerenciadorfinanceiro.Transaction
 import com.example.gerenciadorfinanceiro.Util
@@ -12,15 +11,14 @@ import com.google.gson.reflect.TypeToken
 // Classe para gerenciar SharedPreferences relacionados a categorias
 class SharedPreferencesHelper(context: Context) {
 
-
     // Referência ao SharedPreferences
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(Util.Chaves.PREFENCES_MASTER_KEY, Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
     // Variável global para uma instância específica de SharedPreferencesHelper
     companion object {
-        lateinit var sharedPreferencesCategory: SharedPreferencesHelper
-        lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
+         lateinit var sharedPreferencesCategory: SharedPreferencesHelper
+         lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
     }
 
     // Método para salvar uma string no SharedPreferences
