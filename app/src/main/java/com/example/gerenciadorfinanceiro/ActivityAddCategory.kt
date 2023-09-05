@@ -11,7 +11,7 @@ class ActivityAddCategory : AppCompatActivity() {
     private lateinit var binding: ActivityAddCategoryBinding
     private lateinit var categoryAdapter: CategoryAdapter
 
-    private val categoryList = mutableListOf<Category>() // Lista das categorias cadastradas
+    //private val categoryList = mutableListOf<Category>() // Lista das categorias cadastradas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,14 +42,14 @@ class ActivityAddCategory : AppCompatActivity() {
 
     // Atualiza a lista de categorias com uma nova lista
     private fun updateCategoryList(newList: List<Category>) {
-        categoryList.clear() // Limpa a lista atual
-        categoryList.addAll(newList) // Adiciona os novos dados à lista
+        CategoryData.categoryList.clear() // Limpa a lista atual
+        CategoryData.addListCategory(newList) // Adiciona os novos dados à lista
         categoryAdapter.notifyDataSetChanged() // Notifica o adaptador sobre as mudanças nos dados
     }
 
     // Configura o RecyclerView
     private fun setupRecyclerView() {
-        categoryAdapter = CategoryAdapter(this, categoryList)
+        categoryAdapter = CategoryAdapter(this)
         binding.rvCategories.layoutManager = LinearLayoutManager(this)
         binding.rvCategories.adapter = categoryAdapter
     }
@@ -73,15 +73,21 @@ class ActivityAddCategory : AppCompatActivity() {
 
         // Adiciona o objeto categoria à lista de categorias
         val newCategory = Category(categoryName)
-        categoryList.add(newCategory)
-        categoryAdapter.notifyDataSetChanged()
+        CategoryData.addCategory(newCategory) //.add(newCategory)
+        categoryAdapter.notifyItemInserted(CategoryData.getListSize())
 
         // Salva a nova categoria no SharedPreferences
-        sharedPreferencesCategory.saveCategories(categoryList)
+        sharedPreferencesCategory.saveCategories(CategoryData.categoryList)
 
         // Limpa o EditText
         binding.edtCategoryName.text.clear()
 
         Util.exibirToast(this, "Categoria adicionada com sucesso!")
+    }
+
+    // Função para garantir que o adapter será notificado, independente do que foi alterado na lista
+    override fun onStart(){
+        super.onStart()
+        categoryAdapter.notifyDataSetChanged()
     }
 }

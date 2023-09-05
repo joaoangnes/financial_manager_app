@@ -87,6 +87,12 @@ class SharedPreferencesHelper(context: Context) {
         saveCategories(categories)
     }
 
+    // Método para remover todos os dados das SharedPreferences
+    fun clearAllData() {
+        editor.clear()
+        editor.apply()
+    }
+
     // Método para excluir uma transação
     fun deleteTransaction(transaction: Transaction) {
         val transactions = getTransactions().toMutableList()

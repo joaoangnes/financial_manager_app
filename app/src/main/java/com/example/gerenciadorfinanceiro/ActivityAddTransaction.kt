@@ -16,10 +16,6 @@ class ActivityAddTransaction : AppCompatActivity() {
     private lateinit var sharedPreferencesCategory: SharedPreferencesHelper
     private lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
 
-
-    private val categoryList = mutableListOf<Category>() // Lista de categorias cadastradas
-    private val transactionList = mutableListOf<Transaction>() // Lista de categorias cadastradas
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +25,7 @@ class ActivityAddTransaction : AppCompatActivity() {
         // Inicializa os SharedPreferencesHelper
         sharedPreferencesCategory = SharedPreferencesHelper(this)
         sharedPreferencesTransaction = SharedPreferencesHelper(this)
+        transactionAdapter = TransactionAdapter(this)
 
         // Configura o Spinner com as categorias cadastradas
         configureCategorySpinner()
@@ -55,7 +52,7 @@ class ActivityAddTransaction : AppCompatActivity() {
         val transactionValue = binding.edtTransactionValue.text.toString().toDouble()
         val selectedCategoryIndex = binding.spnCategory.selectedItemPosition
         val savedTransactions = sharedPreferencesTransaction.getTransactions()
-        transactionList.addAll(savedTransactions)
+        TransactionData.addListTransaction(savedTransactions)
 
         // Verifica se foi preenchido os dados da transação
         if ( binding.edtTransactionDescription.text.isEmpty()||
@@ -65,17 +62,17 @@ class ActivityAddTransaction : AppCompatActivity() {
         }
 
         // Verifique se a categoria selecionada é válida
-        if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categoryList.size) {
-            val selectedCategory = categoryList[selectedCategoryIndex]
+        if (selectedCategoryIndex >= 0 && selectedCategoryIndex < CategoryData.getListSize()) {
+            val selectedCategory = CategoryData.categoryList[selectedCategoryIndex]
 
             // Instanciando o objeto de transação
             val newTransaction = Transaction(transactionDescription, transactionValue, selectedCategory)
 
             // Salve a transação em SharedPreferences ou em outra fonte de dados
-            transactionList.add(newTransaction)
+            TransactionData.addTransaction(newTransaction)
 
-            transactionAdapter = TransactionAdapter(transactionList)
-            transactionAdapter.notifyDataSetChanged()
+           // transactionAdapter = TransactionAdapter(this)
+            // transactionAdapter.notifyDataSetChanged()
 
             // Limpe os campos após salvar a transação
             binding.edtTransactionDescription.text.clear()
@@ -84,7 +81,7 @@ class ActivityAddTransaction : AppCompatActivity() {
         }
 
         sharedPreferencesCategory = SharedPreferencesHelper(this) // Inicializa o SharedPreferences para armazenar as categorias
-        sharedPreferencesTransaction.saveTransaction(transactionList) // Salva a nova transação no SharedPreferences
+        sharedPreferencesTransaction.saveTransaction(TransactionData.transactionList) // Salva a nova transação no SharedPreferences
 
         // Limpa o EditText
         binding.edtTransactionValue.text.clear()
@@ -94,14 +91,14 @@ class ActivityAddTransaction : AppCompatActivity() {
     // Função que irá adicionar as categorias no elemento spinner no cadastro de transação
     private fun configureCategorySpinner() {
         // Limpa a lista atual para evitar duplicatas
-        categoryList.clear()
+        CategoryData.categoryList.clear()
 
         // Carrega as categorias do SharedPreferences
         val savedCategories = sharedPreferencesCategory.getCategories()
-        categoryList.addAll(savedCategories)
+        CategoryData.addListCategory(savedCategories)
 
         // Cria um ArrayAdapter para o Spinner
-        val categoryNames = categoryList.map { it.name }
+        val categoryNames = CategoryData.categoryList.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryNames)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -115,6 +112,12 @@ class ActivityAddTransaction : AppCompatActivity() {
 
         // Atualiza as informações do spinner de categorias
         configureCategorySpinner()
+    }
+
+    // Função para garantir que o adapter será notificado, independente do que foi alterado na lista
+    override fun onStart(){
+        super.onStart()
+        transactionAdapter.notifyDataSetChanged()
     }
 
 }

@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper
 import com.example.gerenciadorfinanceiro.Helper.SharedPreferencesHelper.Companion.sharedPreferencesCategory
 import com.example.gerenciadorfinanceiro.databinding.ItemCategoryBinding
-
+//, private val categoryList: List<Category>
 // Classe Adapter para a RecyclerView que exibe as categorias
-class CategoryAdapter(private val context: Context, private val categoryList: List<Category>) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+class CategoryAdapter(private val context: Context) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     // Método chamado quando uma nova ViewHolder é criada
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -20,13 +20,13 @@ class CategoryAdapter(private val context: Context, private val categoryList: Li
 
     // Método chamado para vincular os dados a uma ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val category = categoryList[position]
+        val category = CategoryData.categoryList[position]
         holder.bind(category)
     }
 
     // Retorna o número total de itens na lista
     override fun getItemCount(): Int {
-        return categoryList.size
+        return CategoryData.getListSize()
     }
 
     // Classe ViewHolder interna para configurar a exibição de cada item na RecyclerView
@@ -34,7 +34,7 @@ class CategoryAdapter(private val context: Context, private val categoryList: Li
         init {
             // Configura o evento de clique no botão de edição
             binding.ivEditTransaction.setOnClickListener {
-                val category = categoryList[adapterPosition]
+                val category = CategoryData.categoryList[adapterPosition]
                 val newCategory = Category("Rubinho") // Exemplo de uma nova categoria
                 sharedPreferencesCategory.editCategory(category, newCategory)
 
@@ -49,7 +49,7 @@ class CategoryAdapter(private val context: Context, private val categoryList: Li
             binding.ivDeleteTransaction.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val category = categoryList[position]
+                    val category = CategoryData.categoryList[position]
                     sharedPreferencesCategory.deleteCategory(category)
 
                     Util.exibirToast(context, "Categoria excluída!")

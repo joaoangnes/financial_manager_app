@@ -14,8 +14,6 @@ class ActivityListTransactions : AppCompatActivity() {
     private lateinit var binding: ActivityListTransactionsBinding
     private lateinit var transactionAdapter: TransactionAdapter
 
-    private val transactionList = mutableListOf<Transaction>() // Lista de transações cadastradas
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListTransactionsBinding.inflate(layoutInflater)
@@ -37,23 +35,28 @@ class ActivityListTransactions : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        transactionAdapter = TransactionAdapter(transactionList)
+        transactionAdapter = TransactionAdapter(this)
         binding.rvTransactions.layoutManager = LinearLayoutManager(this)
         binding.rvTransactions.adapter = transactionAdapter
     }
 
     // Atualiza a lista de transações com uma nova lista
     private fun updateTransactionList(newList: List<Transaction>) {
-        transactionList.clear() // Limpa a lista atual
-        transactionList.addAll(newList) // Adiciona os novos dados à lista
-        transactionAdapter.notifyDataSetChanged() // Notifica o adaptador sobre as mudanças nos dados
+        TransactionData.transactionList.clear() // Limpa a lista atual
+        TransactionData.addListTransaction(newList)// Adiciona os novos dados à lista
+        //transactionAdapter.notifyDataSetChanged() // Notifica o adaptador sobre as mudanças nos dados
     }
 
     private fun loadTransactions() {
         // Busca as transações cadastradas e plota na tela
-
         val savedTransactions = sharedPreferencesTransaction.getTransactions()
         updateTransactionList(savedTransactions) // Atualiza a lista com os novos dados
         Log.d("list", savedTransactions.toString())
+    }
+
+    // Função para garantir que o adapter será notificado, independente do que foi alterado na lista
+    override fun onStart(){
+        super.onStart()
+        transactionAdapter.notifyDataSetChanged()
     }
 }
