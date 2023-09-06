@@ -4,21 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:layout_margin="6dp">
 
     <EditText
         android:id="@+id/edtNewCategoryName"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:hint="Novo nome da categoria"
-        android:padding="8dp"/>
+        style="@style/AppEditTextStyle"
+        android:layout_width="300dp"
+        android:hint="Novo nome da categoria"/>
 
     <Button
         android:id="@+id/btnSaveCategory"
-        android:layout_width="wrap_content"
+        style="@style/AppButtonStyle"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_marginTop="10dp"
         android:text="Salvar" />
 

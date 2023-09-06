@@ -18,7 +18,7 @@ class ActivityAddCategory : AppCompatActivity() {
         setContentView(binding.root)
 
         // Inicializa o SharedPreferences para armazenar as categorias
-        sharedPreferencesCategory = SharedPreferencesHelper(this)
+        SharedPreferencesHelper.initialize(this)
 
         // Configura o RecyclerView
         setupRecyclerView()

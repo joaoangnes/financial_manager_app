@@ -1,8 +1,6 @@
 package com.example.gerenciadorfinanceiro.view
 
 import android.app.Dialog
-import android.graphics.drawable.Icon
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -19,52 +17,42 @@ import com.example.gerenciadorfinanceiro.helper.SharedPreferencesHelper.Companio
 // Classe de View Holder para as Categorias
 class CategoryViewHolder(categoryView: View): ViewHolder(categoryView) {
     var txtCategoryName: TextView = categoryView.findViewById(R.id.txtCategoryName)
-    var ivEditCategory: ImageView = categoryView.findViewById(R.id.ivEditCategory)
-    var ivDeleteCategory: ImageView = categoryView.findViewById(R.id.ivDeleteCategory)
-    //binding.txtCategoryName.text = " - ${category.name}"
+    private var ivEditCategory: ImageView = categoryView.findViewById(R.id.ivEditCategory)
+    private var ivDeleteCategory: ImageView = categoryView.findViewById(R.id.ivDeleteCategory)
 
     init {
+
         // Configura o evento de clique no botão de edição
         ivEditCategory.setOnClickListener {
-            val category = CategoryData.categoryList[adapterPosition]
+            val category = CategoryData.categoryList.getOrNull(adapterPosition)
 
-            // Cria um diálogo de edição
-            val dialog = Dialog(categoryView.context)
-            dialog.setContentView(R.layout.dialog_edit_category)
+            if (category != null) {
+                val dialog = Dialog(categoryView.context)
+                dialog.setContentView(R.layout.dialog_edit_category)
 
-            val edtNewCategoryName = dialog.findViewById<EditText>(R.id.edtNewCategoryName)
-            val btnSaveCategory = dialog.findViewById<Button>(R.id.btnSaveCategory)
+                val edtNewCategoryName = dialog.findViewById<EditText>(R.id.edtNewCategoryName)
+                val btnSaveCategory = dialog.findViewById<Button>(R.id.btnSaveCategory)
 
-            // Preenche o campo de texto com o nome atual da categoria
-            edtNewCategoryName.setText(category.name)
+                edtNewCategoryName.setText(category.name)
 
-            btnSaveCategory.setOnClickListener {
-                val newCategoryName = edtNewCategoryName.text.toString()
+                btnSaveCategory.setOnClickListener {
+                    val newCategoryName = edtNewCategoryName.text.toString()
 
-                // Verifica se o nome não está vazio
-                if (newCategoryName.isNotEmpty()) {
-                    // Atualiza o nome da categoria
-                    val newCategory = Category(Util.generateUniqueId(), newCategoryName)
-                    sharedPreferencesCategory.editCategory(category, newCategory)
+                    if (newCategoryName.isNotEmpty()) {
+                        sharedPreferencesCategory.editCategoryName(category.id, newCategoryName)
 
-                    // Fecha o diálogo
-                    dialog.dismiss()
+                        dialog.dismiss()
 
-                    // Exibe uma mensagem ou atualiza a interface conforme necessário
-                    Util.exibirToast(categoryView.context, "Categoria editada: ${category.name} -> $newCategoryName")
+                        Util.exibirToast(categoryView.context, "Categoria editada: ${category.name} -> $newCategoryName")
 
-                    // Registra um log para mostrar a edição da categoria
-                    Log.d("SharedPreferencesHelper", "Categoria editada: ${category.name}")
-                } else {
-                    // Exibe uma mensagem de erro se o nome estiver vazio
-                    Util.exibirToast(categoryView.context, "O nome da categoria não pode estar vazio.")
+                    } else {
+                        Util.exibirToast(categoryView.context, "O nome da categoria não pode estar vazio.")
+                    }
                 }
+
+                dialog.show()
             }
-
-            // Exibe o diálogo
-            dialog.show()
         }
-
 
         // Configura o evento de clique no botão de exclusão
         ivDeleteCategory.setOnClickListener {

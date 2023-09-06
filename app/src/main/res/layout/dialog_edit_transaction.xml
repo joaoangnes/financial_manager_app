@@ -1,0 +1,41 @@
+<!-- dialog_edit_category.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_margin="6dp">
+
+    <EditText
+        android:id="@+id/edtNewTransactionDescription"
+        style="@style/AppEditTextStyle"
+        android:layout_width="300dp"
+        android:layout_marginTop="20dp"
+        android:hint="Descrição"
+        android:inputType="text"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/edtNewTransactionAmount"
+        style="@style/AppEditTextStyle"
+        android:layout_width="300dp"
+        android:hint="Valor da Transação"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp"/>
+
+    <Spinner
+        android:id="@+id/spnNewCategory"
+        android:layout_width="300dp"
+        style="@style/AppSpinnerStyle"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnSaveTransaction"
+        style="@style/AppButtonStyle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Salvar" />
+
+</LinearLayout>

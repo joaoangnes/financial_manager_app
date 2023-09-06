@@ -19,7 +19,7 @@ class ActivityListTransactions : AppCompatActivity() {
         setContentView(binding.root)
 
         // Inicializa o SharedPreferences para armazenar as categorias
-        sharedPreferencesTransaction = SharedPreferencesHelper(this)
+        SharedPreferencesHelper.initialize(this)
 
         // Configurar a RecyclerView
         setupRecyclerView()
@@ -27,6 +27,11 @@ class ActivityListTransactions : AppCompatActivity() {
         // Configurar o botão "Adicionar Transação" para redirecionar o usuário
         binding.btnGoTransactionListActivity.setOnClickListener {
             startActivity(Intent(this, ActivityAddTransaction::class.java))
+        }
+
+        // Configura o botão "Atualizar Lista" para carregar as transações
+        binding.btnListRefresh.setOnClickListener {
+            loadTransactions()
         }
 
         // Carregar a lista de transações da SharedPreferences

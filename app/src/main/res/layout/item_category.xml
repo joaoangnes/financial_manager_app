@@ -26,7 +26,6 @@
         android:layout_centerVertical="true"
         android:contentDescription="Editar" />
 
-    <!-- Ícone de exclusão -->
     <ImageView
         android:id="@+id/ivDeleteCategory"
         android:layout_width="wrap_content"
@@ -35,21 +34,5 @@
         android:layout_toStartOf="@id/ivEditCategory"
         android:layout_centerVertical="true"
         android:contentDescription="Excluir" />
-   <!-- <Button
-        android:id="@+id/btnEditCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:contentDescription="Edit"
-        android:text="Edit"
-        android:layout_marginRight="10dp"
-        android:onClick="onEditClick" />
-
-    <Button
-        android:id="@+id/btnDeleteCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:contentDescription="Delete"
-        android:onClick="onDeleteClick"
-        android:text="Delete" /> -->
 
 </LinearLayout>

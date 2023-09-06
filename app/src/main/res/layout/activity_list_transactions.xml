@@ -3,31 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/LinearLayoutStyle"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".ActivityListTransactions">
 
     <TextView
+        style="@style/AppTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lista de Transações"
-        android:textSize="28sp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:text="Lista de Transações" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTransactions"
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:layout_height="400dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:padding="10dp"
+        android:textAlignment="viewStart" />
 
     <Button
         android:id="@+id/btnGoTransactionListActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Adicionar Transação"
-        android:layout_gravity="center"/>
+        style="@style/AppButtonStyle"
+        android:text="Adicionar Transação" />
+
+    <Button
+        android:id="@+id/btnListRefresh"
+        style="@style/AppButtonStyle"
+        android:text="Atualizar Transações" />
 </LinearLayout>

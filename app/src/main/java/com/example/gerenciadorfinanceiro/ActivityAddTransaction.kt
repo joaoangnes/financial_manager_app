@@ -45,8 +45,7 @@ class ActivityAddTransaction : AppCompatActivity() {
     // Função que irá inicializar o adapter e as SharedPreferences
     private fun setupActivity(){
         // Inicializa os SharedPreferencesHelper
-        sharedPreferencesCategory = SharedPreferencesHelper(this)
-        sharedPreferencesTransaction = SharedPreferencesHelper(this)
+        SharedPreferencesHelper.initialize(this)
         transactionAdapter = TransactionAdapter(this)
     }
 
@@ -55,7 +54,6 @@ class ActivityAddTransaction : AppCompatActivity() {
         val transactionDescription = binding.edtTransactionDescription.text.toString()
         val transactionValue = binding.edtTransactionValue.text.toString().toDouble()
         val selectedCategoryIndex = binding.spnCategory.selectedItemPosition
-        val savedTransactions = sharedPreferencesTransaction.getTransactions()
 
         // Verifica se foi preenchido os dados da transação
         if ( binding.edtTransactionDescription.text.isEmpty()||

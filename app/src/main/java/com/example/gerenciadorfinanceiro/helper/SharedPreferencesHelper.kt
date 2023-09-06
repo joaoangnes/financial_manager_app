@@ -2,6 +2,7 @@ package com.example.gerenciadorfinanceiro.helper
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.gerenciadorfinanceiro.Category
 import com.example.gerenciadorfinanceiro.Transaction
 import com.example.gerenciadorfinanceiro.Util
@@ -17,8 +18,13 @@ class SharedPreferencesHelper(context: Context) {
 
     // Variável global para uma instância específica de SharedPreferencesHelper
     companion object {
-         lateinit var sharedPreferencesCategory: SharedPreferencesHelper
-         lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
+        lateinit var sharedPreferencesCategory: SharedPreferencesHelper
+        lateinit var sharedPreferencesTransaction: SharedPreferencesHelper
+
+        fun initialize(context: Context) {
+            sharedPreferencesCategory = SharedPreferencesHelper(context)
+            sharedPreferencesTransaction = SharedPreferencesHelper(context)
+        }
     }
 
     // Método para salvar uma string no SharedPreferences
@@ -70,13 +76,37 @@ class SharedPreferencesHelper(context: Context) {
         return gson.fromJson(json, type) ?: emptyList()
     }
 
+    // Método para editar uma transação existente
+    fun editTransaction(transactionId: String, newTransaction: Transaction) {
+        val transactions = getTransactions().toMutableList()
+        val existingTransactionIndex = transactions.indexOfFirst { it.id == transactionId }
+
+        if (existingTransactionIndex != -1) {
+            transactions[existingTransactionIndex] = newTransaction
+            saveTransaction(transactions)
+        }
+    }
+
+    // Método para excluir uma transação
+    fun deleteTransaction(transaction: Transaction) {
+        val transactions = getTransactions().toMutableList()
+        Log.d("RmTransaction", "Antes: "+transactions)
+        transactions.remove(transaction)
+        Log.d("RmTransaction", "Depois: "+transactions)
+        saveTransaction(transactions)
+    }
+
     // Método para editar uma categoria existente
-    fun editCategory(oldCategory: Category, newCategory: Category) {
+    fun editCategoryName(categoryId: String, newCategoryName: String) {
         val categories = getCategories().toMutableList()
-        categories.remove(oldCategory)
-        categories.add(newCategory)
+        val updatedCategory = categories.find { it.id == categoryId }
+
+        updatedCategory?.name = newCategoryName
+
+        // Salva a lista de categorias atualizada nas SharedPreferences
         saveCategories(categories)
     }
+
 
     // Método para excluir uma categoria
     fun deleteCategory(category: Category) {
@@ -91,10 +121,4 @@ class SharedPreferencesHelper(context: Context) {
         editor.apply()
     }
 
-    // Método para excluir uma transação
-    fun deleteTransaction(transaction: Transaction) {
-        val transactions = getTransactions().toMutableList()
-        transactions.remove(transaction)
-        saveTransaction(transactions)
-    }
 }
